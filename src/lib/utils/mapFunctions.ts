@@ -179,16 +179,14 @@ export function getInfo(map: Map, wmsLayers: Layer<any, LayerRenderer<any>>[], c
         autoPan: true,
     });
 
-    closer.onclick = function () {
-        popup.setPosition(undefined);
-        closer.blur();
-        return false;
+    // function that closes popup when user clicks on x
+    closer.onclick = function() {
+        map.removeOverlay(popup);
     };
 
-    map.addOverlay(popup);
-
     map.on('singleclick', function(event) {
-
+        
+    map.addOverlay(popup);
     popup.setPosition(undefined);
     content.innerHTML = '';
     let coordinate = event.coordinate
@@ -196,25 +194,31 @@ export function getInfo(map: Map, wmsLayers: Layer<any, LayerRenderer<any>>[], c
     // for loop that calls getFeatureInfoUrl on each active layer
 
     let activeLayers = getActiveLayers(wmsLayers)
-    activeLayers.forEach(layer => { 
-        let layerSource: TileWMS = layer.getSource()
-        let url = layerSource.getFeatureInfoUrl(
-            coordinate, 
-            mapView.getResolution()!,
-            mapView.getProjection()!, 
-            {'INFO_FORMAT': 'text/html', 'QUERY_LAYERS': layerSource.getParams().layers}
-        )
-        if (url) {
-            fetch(url)
-            .then(response => response.text())
-            .then((html) => {
-                if (html != "") {
-                    content.innerHTML = html;
-                    popup.setPosition(event.coordinate);
-                }
-            })
-            .catch(error => console.log(error))
-        }    
+    activeLayers.forEach((layer) => { 
+
+        if (layer.get('title') !== 'Skærmkort') {
+  
+            let layerSource: TileWMS = layer.getSource()
+            let url = layerSource.getFeatureInfoUrl(
+                coordinate, 
+                mapView.getResolution()!,
+                mapView.getProjection()!, 
+                {'INFO_FORMAT': 'text/html', 'QUERY_LAYERS': layerSource.getParams().layers}
+            )
+            if (url) {
+                fetch(url)
+                .then(response => response.text())
+                .then((html) => {
+                    if (html != "") {
+                        console.log(html);
+                        
+                        content.innerHTML = html;
+                        popup.setPosition(event.coordinate);
+                    }
+                })
+                .catch(error => console.log(error))
+            }  
+        }  
     })
 }) 
 }

@@ -108,10 +108,12 @@
 
 
         // test popup
-        getInfo(map1, dashboardLayers, 'popup1', 'popup-closer1', 'popup-content1')
-        getInfo(map2, obliqueLayers, 'popup2', 'popup-closer2', 'popup-content2')
-        getInfo(map3, fotoLayers, 'popup3', 'popup-closer3', 'popup-content3')
-        getInfo(map4, lidarLayers, 'popup4', 'popup-closer4', 'popup-content4')
+        getInfo(map1, dashboardLayers, 'popup1', 'popup-content1', 'popup-closer1')
+
+
+        getInfo(map2, obliqueLayers, 'popup2', 'popup-content2', 'popup-closer2')
+        getInfo(map3, fotoLayers, 'popup3', 'popup-content3', 'popup-closer3')
+        getInfo(map4, lidarLayers, 'popup4', 'popup-content4', 'popup-closer4')
 
     })
 
@@ -120,26 +122,31 @@
 </script>
 
 <div id="popup1" class="ol-popup">
-    <a href="#" id="popup-closer1" class="ol-popup-closer"></a>
     <div id="popup-content1"></div>
+    <button id="popup-closer1" class="ol-popup-closer">Close</button>
 </div>
+
 <div id="popup2" class="ol-popup">
-    <a href="#" id="popup-closer2" class="ol-popup-closer"></a>
     <div id="popup-content2"></div>
-</div>
+    <button id="popup-closer2" class="ol-popup-closer">Close</button>
+</div> 
+
 <div id="popup3" class="ol-popup">
-    <a href="#" id="popup-closer3" class="ol-popup-closer"></a>
     <div id="popup-content3"></div>
+    <button id="popup-closer3" class="ol-popup-closer">Close</button>
 </div>
+
 <div id="popup4" class="ol-popup">
-    <a href="#" id="popup-closer4" class="ol-popup-closer"></a>
     <div id="popup-content4"></div>
+    <button id="popup-closer4" class="ol-popup-closer">Close</button>
 </div>
 
 <div class="title">
-    <div class="titlewrapper">
+    <div class="iconwrapper">
         <img src="https://raw.githubusercontent.com/SDFIdk/.github/main/SDFI_DK_Hvid.svg" alt="SDFI logo" height="100">
-        <h1>Job dashboard</h1>
+    </div>
+    <div class="titlewrapper">
+        <h1>Job Dashboard</h1>
     </div>
     
     <div class="FrameWrapper">
@@ -253,10 +260,10 @@
         display: flex;
         flex-direction: row;
         justify-content: right;
-
         height: 100%;
         flex: 1;  
     }
+
     .titlewrapper {
         display: flex;
         flex-direction: row;
@@ -266,19 +273,29 @@
         flex: 1;
        
     }
+    .iconwrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        height: 100%;
+        flex: 1;
+       
+    }
+    
     .ol-popup {
-    position: absolute;
-    background-color: white;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #cccccc;
-    bottom: 12px;
-    left: -50px;
-    min-width: 280px;
+        position: absolute;
+        background-color: white;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #cccccc;
+        bottom: 12px;
+        left: -50px;
+        min-width: 250px;
     }
 
-    .ol-popup:before {
+    /* .ol-popup:before {
         top: 100%;
         border: solid transparent;
         content: " ";
@@ -300,17 +317,31 @@
         border-width: 11px;
         left: 48px;
         margin-left: -11px;
-    }
+    } */
 
-    .ol-popup-closer {
+    /* .ol-popup-closer {
         text-decoration: none;
         position: absolute;
-        top: 2px;
+        bottom: 2px;
         right: 8px;
+    } */
+    button {
+        background-color: #71a5de;
+        border: none;
+        color: white;
+        padding: 5px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        margin-top: 20px;
+        cursor: pointer;
+        border-radius: 12px;
+        width: 100%;
     }
-
-    .ol-popup-closer:after {
-        content: "✖";
+    button:hover {
+        box-shadow:0px 0px 0px 2px #1e3975 inset;
     }
 
     
