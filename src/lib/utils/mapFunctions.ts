@@ -1,6 +1,5 @@
 import type Layer from "ol/layer/Layer"
 import type LayerRenderer from "ol/renderer/Layer"
-import { onMount } from "svelte";
 import { Feature, Map, Overlay } from "ol";
 import { mapView } from "../utils/mapView";	
 import type { TileWMS } from "ol/source";
@@ -10,7 +9,8 @@ import Fill from "ol/style/Fill";
 import CircleStyle from 'ol/style/Circle.js';
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
-import type { ProjectionLike } from "ol/proj";
+import type { Writable } from "svelte/store";
+
 
 
 function convertToNumber(string: string) {
@@ -44,47 +44,78 @@ function removeSpacesAndLowercase(string: string) {
 }
 
 // function that creates layer switcher and adds button for each map layer
-export async function createLayerSwitcher(layers : Layer<any, LayerRenderer<any>>[], target: string, exclusive: boolean, mapName: string) {
+export async function createLayerSwitcher(layers : Layer<any, LayerRenderer<any>>[], target: string, exclusive: boolean, mapName: string, title: string, urlStore?: Writable<any>) {
+
     let layerSwitcher = document.getElementById(target)!
+ 
+    // add title to layer switcher
+    let titleDiv = document.createElement('h2')
+    titleDiv.innerHTML = title
+    titleDiv.style.cssText = 'width:95%; height:30px; border:none; border-radius:10px; margin:5px; text-align:center;'
+    layerSwitcher.appendChild(titleDiv)
+
+    // create button for each layer
     layers.forEach(layer => {
+
+        // create button
         let button = document.createElement('button')
-        button.className = removeSpacesAndLowercase(layer.get('title') + mapName)
+        button.id = removeSpacesAndLowercase(layer.get('title') + mapName)
         button.innerHTML = layer.get('title')
         button.style.cssText = 'width:95%; height:30px; border:none; border-radius:10px; margin:5px;'
+        
+        // set button to color based off visibility
         if (layer.getVisible()) {
             button.style.backgroundColor = '#83b0e1'
         } else {
             button.style.backgroundColor = '#f8f9fb'
         }
-        button.onmouseout = ()=> {button.style.border = 'none'}
-        button.onmouseover = ()=> {button.style.border = '2px solid #71a5de'}
+
+        // change button color on hover
+        button.onmouseout = ()=> {button.style.boxShadow = 'none'}
+        button.onmouseover = ()=> {button.style.boxShadow = "0px 0px 0px 3px #166cc9 inset"}
+
+        // add event listener to button
         button.addEventListener('click', function() {
+            // set layer to visible if invisible and vice versa
             if (layer.getVisible()) {
                 layer.setVisible(false)
                 button.style.backgroundColor = '#f8f9fb' 
             } else {
-                button.style.backgroundColor = '#83b0e1'
                 layer.setVisible(true)
-                // set all other layers to invisible
+                button.style.backgroundColor = '#83b0e1'
+                // refresh layer
+                layer.getSource().refresh()
+                if (urlStore) {urlStore.set(getLegendUrl(layer))}
+                
+
+
+                // set all other layers to invisible if exclusive is true
                 if (exclusive) {
                     layers.forEach(layer => {
                         if (layer.get('title') !== button.innerHTML) {
                             layer.setVisible(false)
-                            let otherButton = document.getElementsByClassName(removeSpacesAndLowercase(layer.get('title')))[0] as HTMLButtonElement
+                            let otherButton = document.getElementById(removeSpacesAndLowercase(layer.get('title')+mapName)) as HTMLButtonElement
                             otherButton.style.backgroundColor = '#f8f9fb'
+                            
                         }
                     })    
                 }  
             }
+            
         })
         layerSwitcher.appendChild(button)
         createOpacitySlider(layer, target)
     })
 
     // get first button and set it to active
-    let firstButton = document.getElementsByClassName(removeSpacesAndLowercase(layers[0].get('title') + mapName))[0] as HTMLButtonElement
+    let firstButton = document.getElementById(removeSpacesAndLowercase(layers[0].get('title') + mapName)) as HTMLButtonElement
     firstButton.style.backgroundColor = '#83b0e1'
     // layerSwitcher.appendChild(firstButton)
+}
+// Function that returns Legend URL
+export function getLegendUrl(activeLayer: Layer<any, LayerRenderer<any>>) {
+    let legendUrl = activeLayer.getSource().getLegendUrl(null, { 'LAYER': activeLayer.getSource().getParams().layers })
+    return legendUrl
 }
 
 // function that returns active layers on map
@@ -210,8 +241,6 @@ export function getInfo(map: Map, wmsLayers: Layer<any, LayerRenderer<any>>[], c
                 .then(response => response.text())
                 .then((html) => {
                     if (html != "") {
-                        console.log(html);
-                        
                         content.innerHTML = html;
                         popup.setPosition(event.coordinate);
                     }
@@ -224,13 +253,17 @@ export function getInfo(map: Map, wmsLayers: Layer<any, LayerRenderer<any>>[], c
 }
 
 // function that takes a layer and refreshes it
-export async function refreshLayer(layer: Layer<any, LayerRenderer<any>>, interval: number) {
-    function doSomething() {
+export async function refreshLayer(layer: Layer<any, LayerRenderer<any>>, interval: number, map: Map) {
+    function refresh() {
+        
         layer.getSource().refresh()
+        map.render()
+        
         
         console.log('Refreshed Layer ' + layer.get('title'));
-        setTimeout(doSomething, interval);
+        setTimeout(refresh, interval);
     }
     
-    setTimeout(doSomething, interval);
+    setTimeout(refresh, interval);
+    
 }

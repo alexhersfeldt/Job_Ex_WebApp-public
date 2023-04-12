@@ -86,8 +86,16 @@ const mapTileLayerParams = [
 const dashboardLayerParams = [
     { 
         title: 'Active Flights',
-        layers: ['Fotofly', 'Flighttracks'],
-        query_layers: ['Fotofly', 'Flighttracks'],
+        layers: ['Fotofly'],
+        query_layers: ['Fotofly'],
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: true
+    },
+    { 
+        title: 'Flighttracks Today',
+        layers: ['Flighttracks'],
+        query_layers: ['Flighttracks'],
         url: `${dataforsyningenUrl}/fotoflyvning_app?`,
         format: 'image/png',
         visible: true

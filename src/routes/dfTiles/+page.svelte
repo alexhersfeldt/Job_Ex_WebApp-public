@@ -2,10 +2,13 @@
     import { Map } from "ol";
     import { onMount } from "svelte";
     import { mapBaseLayers, mapTileLayers } from "../../lib/utils/mapLayers";
-    import { createLayerSwitcher,  setOpacitySliders, setOpacity, addPointLayer, addMapClickEvent } from "../../lib/utils/mapFunctions";
+    import { createLayerSwitcher, getLegendUrl,  setOpacitySliders, setOpacity, addPointLayer, addMapClickEvent} from "../../lib/utils/mapFunctions";
     import { mapView } from "../../lib/utils/mapView";
+	import { dftilesURL } from "$lib/utils/stores";
 
     let map: Map;
+
+   
 
     onMount(()=> { 
 
@@ -18,8 +21,8 @@
         });
 
         // create layer switcher
-        createLayerSwitcher(mapBaseLayers, 'baseLayerSwitcher', true, 'map');
-        createLayerSwitcher(mapTileLayers, 'tileLayerSwitcher', true , 'map');
+        createLayerSwitcher(mapBaseLayers, 'baseLayerSwitcher', true, 'map', 'Background');
+        createLayerSwitcher(mapTileLayers, 'tileLayerSwitcher', true , 'map', 'Tiles', dftilesURL );
 
         // set opacity using index in layer array
         setOpacity(0, mapTileLayers);
@@ -35,7 +38,9 @@
         
         let pointLayerSource = addPointLayer(map);
         addMapClickEvent(map, mapTileLayers, pointLayerSource);
-    
+
+        dftilesURL.set(getLegendUrl(mapTileLayers[0]));
+        
     })
 
 </script>
@@ -56,8 +61,17 @@
         <hr class="solid">
         <div id="tileLayerSwitcher">
         </div>
+        
     </div>
     <div class="featureInfo">
+        {#if dftilesURL}
+            <div class="legend" id="legend">
+                <h2 class="legendTitle">Legend</h2>
+                <img id="legendImage" src= {$dftilesURL} alt="Legend">
+            </div>
+        {/if}   
+        
+        <hr class="solid">
         <h2>Tile Info</h2>
         <hr class="solid">
         <div class="wmsRes">
@@ -68,6 +82,19 @@
 
 
 <style>
+    .legend{
+        
+        width: 200px;
+        height: 100%;
+        top: 20px;
+        right: 20px;
+        background-color: rgba(218, 218, 218, 0.836) ;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+    }
   #map {
         position: absolute;
         border-radius: 20px;
@@ -131,7 +158,7 @@
         justify-content: space-around;
         align-items: center;
         background-color: #71a5de;
-        border-radius: 15px;
+        /* border-radius: 15px; */
         /* margin: 10px; */
     } 
     

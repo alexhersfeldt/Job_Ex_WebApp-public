@@ -1,25 +1,15 @@
 <script lang="ts">
     // Imports
-    import OpenLayerMap from "../../lib/components/OpenLayerMap.svelte";
-	import type Layer from "ol/layer/Layer";
-	import TileLayer from "ol/layer/Tile";
-	import { OSM } from "ol/source";
+    
 	import { Map, Overlay } from "ol";
 	import { onMount } from "svelte";
     import { mapBaseLayers, mapTileLayers, dashboardLayers, obliqueLayers, sopLayers, lidarLayers, fotoLayers } from "../../lib/utils/mapLayers";
-    import { createLayerSwitcher, refreshLayer, getInfo } from "../../lib/utils/mapFunctions";
-    import { getFR24EX, getFR24Vik} from "../../lib/utils/heartbeatFunctions";
-    import { mapView } from "../../lib/utils/mapView";
+    import { createLayerSwitcher, refreshLayer, getInfo, getLegendUrl } from "../../lib/utils/mapFunctions";
     import View from 'ol/View';
     import proj4 from "proj4";
     import { get } from "ol/proj";
     import { register } from "ol/proj/proj4";
-
-    
-
-    
-
-   
+	import { map1URL, map2URL, map3URL, map4URL } from "$lib/utils/stores";
 
     // Variables
     let map1: Map;
@@ -29,12 +19,14 @@
 
     const x = 607933;
     const y = 6230000;
-    const zoom = 8;
+    const zoom = 8.5;
 
     const mapSrs = "EPSG:25832"
     proj4.defs(mapSrs,"+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs");
     register(proj4);
     const dkProjection = get(mapSrs);
+
+    // Map views for each map
 
     const mapView1 = new View({
         center: [x, y], 
@@ -66,13 +58,14 @@
 
     onMount(()=> { 
         
+        // Create maps
         map1 = new Map({
             layers: [...dashboardLayers],
             target: 'map1',
             view: mapView1,
             controls: []
         });
-        createLayerSwitcher(dashboardLayers, 'map1Layerswitcher', false, 'map1')
+        createLayerSwitcher(dashboardLayers, 'map1Layerswitcher', false, 'map1', 'Overblik')
 
         map2 = new Map({
             layers: [...obliqueLayers],
@@ -80,7 +73,7 @@
             view: mapView2,
             controls: []
         });
-        createLayerSwitcher(obliqueLayers, 'map2Layerswitcher', false, 'map2')
+        createLayerSwitcher(obliqueLayers, 'map2Layerswitcher', false, 'map2', 'Oblique')
 
         map3 = new Map({
             layers: [...fotoLayers],
@@ -88,7 +81,7 @@
             view: mapView3,
             controls: []
         });
-        createLayerSwitcher(fotoLayers, 'map3Layerswitcher', false, 'map3')
+        createLayerSwitcher(fotoLayers, 'map3Layerswitcher', false, 'map3', 'Foto')
 
         map4 = new Map({
             layers: [ ...lidarLayers],
@@ -96,15 +89,23 @@
             view: mapView4,
             controls: []
         });
-        createLayerSwitcher(lidarLayers, 'map4Layerswitcher', false, 'map4')
+        createLayerSwitcher(lidarLayers, 'map4Layerswitcher', false, 'map4' , 'Lidar')
+
+
         // Refreshes active fly layer every minute
-        refreshLayer(dashboardLayers[2], 60000)
-        refreshLayer(obliqueLayers[3], 300000)
-        refreshLayer(obliqueLayers[4], 300000)
-        refreshLayer(fotoLayers[3], 300000)
-        refreshLayer(fotoLayers[4], 300000)
-        refreshLayer(lidarLayers[3], 300000)
-        refreshLayer(lidarLayers[4], 300000)
+        refreshLayer(dashboardLayers[2], 60000, map1)
+
+        refreshLayer(obliqueLayers[2], 300000, map2)
+        refreshLayer(obliqueLayers[3], 300000, map2)
+        refreshLayer(obliqueLayers[4], 300000, map2)
+
+        refreshLayer(fotoLayers[2], 300000, map3)
+        refreshLayer(fotoLayers[3], 300000, map3)
+        refreshLayer(fotoLayers[4], 300000, map3)
+
+        refreshLayer(lidarLayers[2], 300000, map4)
+        refreshLayer(lidarLayers[3], 300000, map4)
+        refreshLayer(lidarLayers[4], 300000, map4)
 
 
         // test popup
@@ -114,6 +115,11 @@
         getInfo(map2, obliqueLayers, 'popup2', 'popup-content2', 'popup-closer2')
         getInfo(map3, fotoLayers, 'popup3', 'popup-content3', 'popup-closer3')
         getInfo(map4, lidarLayers, 'popup4', 'popup-content4', 'popup-closer4')
+
+        map1URL.set(getLegendUrl(dashboardLayers[3]));
+        map2URL.set(getLegendUrl(obliqueLayers[2]));
+        map3URL.set(getLegendUrl(fotoLayers[2]));
+        map4URL.set(getLegendUrl(lidarLayers[2]));
 
     })
 
@@ -158,19 +164,43 @@
 <div class="mapCon">
     <div id="map1">
         <div class="controlPanel left" id="map1Layerswitcher"></div>
+        {#if map1URL}
+            <div class="legend right" id="legend">
+                <h2 class="legendTitle">Legend</h2>
+                <img id="legendImage" src= {$map1URL} alt="Legend">
+            </div>
+        {/if} 
         
     </div>
     <div id="map2">
+        {#if map2URL}
+            <div class="legend left" id="legend">
+                <h2 class="legendTitle">Legend</h2>
+                <img id="legendImage" src= {$map2URL} alt="Legend">
+            </div>
+        {/if}
         
         <div class="controlPanel right" id="map2Layerswitcher"></div>
         
     </div>
     <div id="map3">
+        {#if map3URL}
+            <div class="legend right" id="legend">
+                <h2 class="legendTitle">Legend</h2>
+                <img id="legendImage" src= {$map3URL} alt="Legend">
+            </div>
+        {/if}
         
         <div class="controlPanel left" id="map3Layerswitcher"></div>
         
     </div>
     <div id="map4">
+        {#if map4URL}
+            <div class="legend left" id="legend">
+                <h2 class="legendTitle">Legend</h2>
+                <img id="legendImage" src= {$map4URL} alt="Legend">
+            </div>
+        {/if}
         
         <div class="controlPanel right" id="map4Layerswitcher"></div>
         
@@ -195,27 +225,21 @@
         flex: 1 0 40%;
         border: #71a5de 6px solid;
         padding: 0px;
-        margin: 5px;
-    }
-    #map1, #map2 {
-        /* top: 100px; */
-    }
-    #map3, #map4 {
-        /* bottom: 10px; */
+        /* margin: 5px; */
     }
     #map1, #map3 {
-        /* right: 5px; */
+        border-right: #71a5de 3px solid;
     }
     #map2, #map4 {
-        /* left: 5px; */
+        border-left:#71a5de 3px solid;
     }
-    .controlPanel {
+    .controlPanel, .legend {
         z-index: 1000;
         position: absolute;
         border: solid #71a5de 3px;
         border-radius: 20px;
         width: 200px;
-        height: 90%;
+        height: auto;
         top: 20px;
         left: 20px;
         background-color: rgba(218, 218, 218, 0.836) ;
@@ -225,11 +249,11 @@
         justify-content: start;
         align-items: center;
     }
-    .controlPanel.right {
+    .controlPanel.right, .legend.right {
         left: unset;
         right: 20px;
     }
-    .controlPanel.left {
+    .controlPanel.left, .legend.left {
         left: 20px;
         right: unset;
     }
@@ -245,8 +269,9 @@
         box-sizing: border-box;
         padding: 10px;
         background-color: rgba(0, 0, 0, 0.61);
-        border-radius: 20px;
+        /* border-radius: 20px; */
         color: aliceblue;
+        margin: 0px;
     }
     iframe {
         height: 75px;
@@ -295,36 +320,6 @@
         min-width: 250px;
     }
 
-    /* .ol-popup:before {
-        top: 100%;
-        border: solid transparent;
-        content: " ";
-        height: 0;
-        width: 0;
-        position: absolute;
-        pointer-events: none;
-    }
-
-    .ol-popup:after {
-        border-top-color: white;
-        border-width: 10px;
-        left: 48px;
-        margin-left: -10px;
-    }
-
-    .ol-popup:before {
-        border-top-color: #cccccc;
-        border-width: 11px;
-        left: 48px;
-        margin-left: -11px;
-    } */
-
-    /* .ol-popup-closer {
-        text-decoration: none;
-        position: absolute;
-        bottom: 2px;
-        right: 8px;
-    } */
     button {
         background-color: #71a5de;
         border: none;
@@ -341,7 +336,7 @@
         width: 100%;
     }
     button:hover {
-        box-shadow:0px 0px 0px 2px #1e3975 inset;
+        box-shadow:0px 0px 0px 3px #166cc9 inset;
     }
 
     
