@@ -94,6 +94,7 @@
 
         // Refreshes active fly layer every minute
         refreshLayer(dashboardLayers[2], 60000, map1)
+        refreshLayer(dashboardLayers[3], 60000, map1)
 
         refreshLayer(obliqueLayers[2], 300000, map2)
         refreshLayer(obliqueLayers[3], 300000, map2)
@@ -268,8 +269,7 @@
         font-weight: bold;
         box-sizing: border-box;
         padding: 10px;
-        background-color: rgba(0, 0, 0, 0.61);
-        /* border-radius: 20px; */
+        background-color: #71a5de;
         color: aliceblue;
         margin: 0px;
     }

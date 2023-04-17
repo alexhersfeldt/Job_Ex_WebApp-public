@@ -51,7 +51,7 @@ export async function createLayerSwitcher(layers : Layer<any, LayerRenderer<any>
     // add title to layer switcher
     let titleDiv = document.createElement('h2')
     titleDiv.innerHTML = title
-    titleDiv.style.cssText = 'width:95%; height:30px; border:none; border-radius:10px; margin:5px; text-align:center;'
+    titleDiv.style.cssText = 'width:100%; height:30px; border:none; margin:5px; text-align:center;'
     layerSwitcher.appendChild(titleDiv)
 
     // create button for each layer
@@ -84,7 +84,8 @@ export async function createLayerSwitcher(layers : Layer<any, LayerRenderer<any>
                 layer.setVisible(true)
                 button.style.backgroundColor = '#83b0e1'
                 // refresh layer
-                layer.getSource().refresh()
+                const now = new Date()
+                layer.getSource().updateParams({'TIME': now.getTime()})
                 if (urlStore) {urlStore.set(getLegendUrl(layer))}
                 
 
@@ -112,6 +113,7 @@ export async function createLayerSwitcher(layers : Layer<any, LayerRenderer<any>
     firstButton.style.backgroundColor = '#83b0e1'
     // layerSwitcher.appendChild(firstButton)
 }
+
 // Function that returns Legend URL
 export function getLegendUrl(activeLayer: Layer<any, LayerRenderer<any>>) {
     let legendUrl = activeLayer.getSource().getLegendUrl(null, { 'LAYER': activeLayer.getSource().getParams().layers })
@@ -256,9 +258,8 @@ export function getInfo(map: Map, wmsLayers: Layer<any, LayerRenderer<any>>[], c
 export async function refreshLayer(layer: Layer<any, LayerRenderer<any>>, interval: number, map: Map) {
     function refresh() {
         
-        layer.getSource().refresh()
-        map.render()
-        
+        const now = new Date()
+        layer.getSource().updateParams({'TIME': now.getTime()})
         
         console.log('Refreshed Layer ' + layer.get('title'));
         setTimeout(refresh, interval);

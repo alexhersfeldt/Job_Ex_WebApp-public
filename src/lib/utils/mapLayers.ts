@@ -14,35 +14,40 @@ export let fotoLayers: Layer<any>[] = []
 export let obliqueLayers: Layer<any>[] = []
 export let sopLayers: Layer<any>[] = []
 export let lidarLayers: Layer<any>[] = []
+export let fotoStatusLayers: Layer<any>[] = []
+export let lidarStatusLayers: Layer<any>[] = []
+export let obliqueStatusLayers: Layer<any>[] = []
+export let sopStatusLayers: Layer<any>[] = []
+
 
 
 // add OSM layer
-const osmLayer: Layer<any> = new TileLayer({
-    visible: true,
-    properties:{
-        title: 'OSM',
-        group: 'base',
-    },
-    source: new OSM()
-})
-mapBaseLayers.push(osmLayer);
+// const osmLayer: Layer<any> = new TileLayer({
+//     visible: true,
+//     properties:{
+//         title: 'OSM',
+//         group: 'base',
+//     },
+//     source: new OSM()
+// })
+// mapBaseLayers.push(osmLayer);
 
 // layer params
 
 const mapBaseLayerParams = [
-    {
-        title: 'Skærmkort Dæmpet',
-        url: `${dataforsyningenUrl}/topo_skaermkort_DAF?`,
-        layers: 'dtk_skaermkort_daempet',
-        format: 'image/png',
-        visible: false
-    },
+    // {
+    //     title: 'Skærmkort Dæmpet',
+    //     url: `${dataforsyningenUrl}/topo_skaermkort_DAF?`,
+    //     layers: 'dtk_skaermkort_daempet',
+    //     format: 'image/png',
+    //     visible: false
+    // },
     {
         title: 'Skærmkort',
         url: `${dataforsyningenUrl}/topo_skaermkort_DAF?`,
         layers: 'dtk_skaermkort',
         format: 'image/png',
-        visible: false
+        visible: true
     },
     {
         title: 'Ortofoto forår',
@@ -239,6 +244,53 @@ const lidarLayerParams = [
     
 ]
 
+const fotoStatusParams = [
+    
+    {
+        title: 'Foto status',
+        layers: 'Fotoblokke',
+        query_layers: 'Fotoblokke',
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: true
+    },  
+]
+const lidarStatusParams = [
+    {
+        title: 'LiDAR Status',
+        layers: 'LiDARblokke',
+        query_layers: 'LiDARblokke',
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: true
+    },
+]
+const obliqueStatusParams = [
+    {
+        title: 'Oblique Status',
+        layers: 'Obliqueblokke',
+        query_layers: 'Obliqueblokke',
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: true
+    },
+    
+]
+const sopStatusParams = [
+    {
+        title: 'SOP Status',
+        layers: 'SOPblokke',
+        query_layers: 'SOPblokke',
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: false
+    },
+]
+
+
+
+
+
 // function to build map layers
 const buildMapLayersWithBaseLayers = (layerParams: any, layerArray: Layer<any>[]) => {
     
@@ -320,6 +372,8 @@ const buildMapLayers = (layerParams: any, layerArray: Layer<any>[]) => {
 
 }
 
+
+
 // build layers
 buildMapLayers(mapBaseLayerParams, mapBaseLayers)
 buildMapLayers(mapTileLayerParams, mapTileLayers)
@@ -328,6 +382,12 @@ buildMapLayersWithBaseLayers(fotoLayerParams, fotoLayers)
 buildMapLayersWithBaseLayers(obliqueLayerParams, obliqueLayers)
 buildMapLayersWithBaseLayers(sopLayerParams, sopLayers)
 buildMapLayersWithBaseLayers(lidarLayerParams, lidarLayers)
+
+buildMapLayersWithBaseLayers(fotoStatusParams, fotoStatusLayers)
+buildMapLayersWithBaseLayers(lidarStatusParams, lidarStatusLayers)
+buildMapLayersWithBaseLayers(obliqueStatusParams, obliqueStatusLayers)
+buildMapLayersWithBaseLayers(sopStatusParams, sopStatusLayers)
+
 
 
 
