@@ -15,6 +15,7 @@
             <button on:click={() => { window.location.href = '/lidarStatus' }}>Lidar Status Map</button>
             <button on:click={() => { window.location.href = '/sopStatus' }}>SOP status Map</button>
             <button on:click={() => { window.location.href = '/obliqueStatus' }}>Oblique status Map</button>
+            <button on:click={() => { window.location.href = '/vektorStatus' }}>vektor status Map</button>
         </div>
     </div>
     

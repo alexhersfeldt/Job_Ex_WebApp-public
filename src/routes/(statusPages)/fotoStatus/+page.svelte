@@ -42,7 +42,10 @@
         createLayerSwitcher(fotoStatusLayers, 'layerSwitcher', false , 'map', 'Layers', fotoStatusUrl );
 
         setOpacity(2, fotoStatusLayers);
+        setOpacity(3, fotoStatusLayers);
+
         setOpacitySliders(2);
+        setOpacitySliders(3);
 
         fotoStatusUrl.set(getLegendUrl(fotoStatusLayers[2]));
         let pointLayerSource = addPointLayer(map);

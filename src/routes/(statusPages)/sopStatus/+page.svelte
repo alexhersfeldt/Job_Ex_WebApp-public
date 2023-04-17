@@ -42,7 +42,9 @@
         createLayerSwitcher(sopStatusLayers, 'layerSwitcher', false , 'map', 'Layers', sopStatusUrl );
 
         setOpacity(2, sopStatusLayers);
+        setOpacity(3, sopStatusLayers);
         setOpacitySliders(2);
+        setOpacitySliders(3);
 
         sopStatusUrl.set(getLegendUrl(sopStatusLayers[2]));
         let pointLayerSource = addPointLayer(map);

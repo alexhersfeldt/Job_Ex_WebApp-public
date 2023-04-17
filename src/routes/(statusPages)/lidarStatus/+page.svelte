@@ -42,7 +42,12 @@
         createLayerSwitcher(lidarStatusLayers, 'layerSwitcher', false , 'map', 'Layers', lidarStatusUrl );
 
         setOpacity(2, lidarStatusLayers);
+        setOpacity(3, lidarStatusLayers);
+        setOpacity(4, lidarStatusLayers);
+
         setOpacitySliders(2);
+        setOpacitySliders(3);
+        setOpacitySliders(4);
 
         lidarStatusUrl.set(getLegendUrl(lidarStatusLayers[2]));
         let pointLayerSource = addPointLayer(map);

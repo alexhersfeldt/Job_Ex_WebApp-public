@@ -10,4 +10,4 @@ export const fotoStatusUrl = writable(null);
 export const lidarStatusUrl = writable(null);
 export const sopStatusUrl = writable(null);
 export const obliqueStatusUrl = writable(null);
-
+export const vektorStatusUrl = writable(null);

@@ -1,9 +1,9 @@
 <script lang="ts">
     import { Map, View } from "ol";
     import { onMount } from "svelte";
-    import { obliqueStatusLayers} from "../../../lib/utils/mapLayers";
+    import { vektorStatusLayers} from "../../../lib/utils/mapLayers";
     import { createLayerSwitcher, getLegendUrl,  setOpacitySliders, setOpacity, addPointLayer, addMapClickEvent} from "../../../lib/utils/mapFunctions";
-	import { obliqueStatusUrl } from "$lib/utils/stores";
+	import { vektorStatusUrl } from "$lib/utils/stores";
 	import { register } from "ol/proj/proj4";
 	import proj4 from "proj4";
 	import { get } from "ol/proj";
@@ -32,23 +32,25 @@
 
         // create map
         map = new Map({
-            layers: [...obliqueStatusLayers],
+            layers: [...vektorStatusLayers],
             target: 'map',
             view: mapView1,
             controls: []
         });
 
         
-        createLayerSwitcher(obliqueStatusLayers, 'layerSwitcher', false , 'map', 'Layers', obliqueStatusUrl );
+        createLayerSwitcher(vektorStatusLayers, 'layerSwitcher', false , 'map', 'Layers', vektorStatusUrl );
 
-        setOpacity(2, obliqueStatusLayers);
-        setOpacity(3, obliqueStatusLayers);
+        setOpacity(2, vektorStatusLayers);
+        setOpacity(3, vektorStatusLayers);
+        setOpacity(4, vektorStatusLayers);
         setOpacitySliders(2);
         setOpacitySliders(3);
+        setOpacitySliders(4);
 
-        obliqueStatusUrl.set(getLegendUrl(obliqueStatusLayers[2]));
+        vektorStatusUrl.set(getLegendUrl(vektorStatusLayers[2]));
         let pointLayerSource = addPointLayer(map);
-        const infoLayer = [obliqueStatusLayers[2]];
+        const infoLayer = [vektorStatusLayers[2], vektorStatusLayers[3]];
         addMapClickEvent(map, infoLayer, pointLayerSource);
         
     })
@@ -57,7 +59,7 @@
 
 <div class="title">
     <img src="https://raw.githubusercontent.com/SDFIdk/.github/main/SDFI_DK_Hvid.svg" alt="SDFI logo" height="80">
-    <h1>Oblique Status</h1>
+    <h1>vektor Status</h1>
 </div>
 <div class="mapCon">
     <div id="map">
@@ -65,10 +67,10 @@
     <div class="mapOverlay leftOverlay" id="panel" >
         <div id="layerSwitcher">
         </div>
-        {#if obliqueStatusUrl}
+        {#if vektorStatusUrl}
             <div class="legend" id="legend">
                 <h2 class="legendTitle">Legend</h2>
-                <img id="legendImage" src= {$obliqueStatusUrl} alt="Legend">
+                <img id="legendImage" src= {$vektorStatusUrl} alt="Legend">
             </div>
         {/if} 
         

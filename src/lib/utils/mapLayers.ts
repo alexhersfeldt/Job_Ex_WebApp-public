@@ -18,6 +18,7 @@ export let fotoStatusLayers: Layer<any>[] = []
 export let lidarStatusLayers: Layer<any>[] = []
 export let obliqueStatusLayers: Layer<any>[] = []
 export let sopStatusLayers: Layer<any>[] = []
+export let vektorStatusLayers: Layer<any>[] = []
 
 
 
@@ -254,6 +255,30 @@ const fotoStatusParams = [
         format: 'image/png',
         visible: true
     },  
+    {
+        title: 'Kommuner',
+        url: `${dataforsyningenUrl}/dagi_DAF`,
+        layers: 'Kommuneinddeling',
+        query_layers: 'Kommuneinddeling',
+        format: 'image/png',
+        visible: false
+    },
+    {
+        title: 'Flighttracks Spring',
+        layers: 'FlighttracksSpring',
+        query_layers: 'FlighttracksSpring',
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: false
+    },
+    {
+        title: 'Spring tracks this Year',
+        layers: 'SpringTracksThisYear',
+        query_layers: 'SpringTracksThisYear',
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: false
+    },
 ]
 const lidarStatusParams = [
     {
@@ -264,6 +289,39 @@ const lidarStatusParams = [
         format: 'image/png',
         visible: true
     },
+    {
+        title: 'Kommuner',
+        url: `${dataforsyningenUrl}/dagi_DAF`,
+        layers: 'Kommuneinddeling',
+        query_layers: 'Kommuneinddeling',
+        format: 'image/png',
+        visible: false
+    },
+    {
+        title: 'LiDAR lots',
+        layers: 'LiDAR_Lot',
+        query_layers: 'LiDAR_Lot',
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: false
+    },
+    { 
+        title: 'LiDAR Flight Tracks Today',
+        layers: ['FlighttracksLiDAR'],
+        query_layers: ['FlighttracksLiDAR'],
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: false
+    },
+    {
+        title: 'LiDAR tracks this year',
+        layers: 'LiDARTracksThisYear',
+        query_layers: 'LiDARTracksThisYear',
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: false
+    },
+    
 ]
 const obliqueStatusParams = [
     {
@@ -273,6 +331,30 @@ const obliqueStatusParams = [
         url: `${dataforsyningenUrl}/fotoflyvning_app?`,
         format: 'image/png',
         visible: true
+    },
+    {
+        title: 'Kommuner',
+        url: `${dataforsyningenUrl}/dagi_DAF`,
+        layers: 'Kommuneinddeling',
+        query_layers: 'Kommuneinddeling',
+        format: 'image/png',
+        visible: false
+    },
+    { 
+        title: 'Oblique Flight Tracks Today',
+        layers: ['FlighttracksOblique'],
+        query_layers: ['FlighttracksOblique'],
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: false
+    },
+    {
+        title: 'Oblique tracks this year',
+        layers: 'ObliqueTracksThisYear',
+        query_layers: 'ObliqueTracksThisYear',
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: false
     },
     
 ]
@@ -284,6 +366,57 @@ const sopStatusParams = [
         url: `${dataforsyningenUrl}/fotoflyvning_app?`,
         format: 'image/png',
         visible: true
+    },
+    {
+        title: 'Kommuner',
+        url: `${dataforsyningenUrl}/dagi_DAF`,
+        layers: 'Kommuneinddeling',
+        query_layers: 'Kommuneinddeling',
+        format: 'image/png',
+        visible: false
+    },
+    {
+        title: 'SOP tracks this year',
+        layers: 'SOPTracksThisYear',
+        query_layers: 'SOPTracksThisYear',
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: false
+    },
+    { 
+        title: 'SOP Flight Tracks Today',
+        layers: ['FlighttracksSummer'],
+        query_layers: ['FlighttracksSummer'],
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: false
+    },
+]
+
+const vektorStatusParams = [
+    {
+        title: 'Vektor Status',
+        layers: 'Vektorblokke',
+        query_layers: 'Vektorblokke',
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: true
+    },
+    {
+        title: 'Foto status',
+        layers: 'Fotoblokke',
+        query_layers: 'Fotoblokke',
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: false
+    },
+    {
+        title: 'Kommuner',
+        url: `${dataforsyningenUrl}/dagi_DAF`,
+        layers: 'Kommuneinddeling',
+        query_layers: 'Kommuneinddeling',
+        format: 'image/png',
+        visible: false
     },
 ]
 
@@ -388,6 +521,7 @@ buildMapLayersWithBaseLayers(fotoStatusParams, fotoStatusLayers)
 buildMapLayersWithBaseLayers(lidarStatusParams, lidarStatusLayers)
 buildMapLayersWithBaseLayers(obliqueStatusParams, obliqueStatusLayers)
 buildMapLayersWithBaseLayers(sopStatusParams, sopStatusLayers)
+buildMapLayersWithBaseLayers(vektorStatusParams, vektorStatusLayers)
 
 
 
