@@ -10,6 +10,15 @@
 <style>
     :global(html) {
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        margin: 0px;
+        padding: 0px;
+        border: 0px;
+    }
+    :global(body) {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        margin: 0px;
+        padding: 0px;
+        border: 0px;
     }
     :global(button) {
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -33,10 +42,11 @@
         border: #71a5de 5px solid;
     }
     :global(.mapOverlay) {
+        z-index: 1000;
         position: absolute;
         border: solid #71a5de 3px;
         border-radius: 20px;
-        width: 15%;
+        width:fit-content;
         height: auto;
         top: 20px;
         background-color: rgba(218, 218, 218, 0.836) ;
@@ -45,6 +55,17 @@
         flex-direction: column;
         justify-content: start;
         align-items: center;
+    }
+    :global(.rightOverlay) {   
+        right: 20px;   
+    }
+    :global(.leftOverlay) {   
+        left: 20px;   
+    }
+    :global(.legendTitle) {
+        margin: 0px;
+        padding: 10px;
+        height: 30px;
     }
     
 </style>

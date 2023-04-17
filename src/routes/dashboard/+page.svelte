@@ -31,25 +31,29 @@
     const mapView1 = new View({
         center: [x, y], 
         projection: <any> dkProjection, 
-        zoom: zoom 
+        zoom: zoom,
+        enableRotation: false
     });
 
     const mapView2 = new View({
         center: [x, y], 
         projection: <any> dkProjection, 
-        zoom: zoom 
+        zoom: zoom,
+        enableRotation: false
     });
 
     const mapView3 = new View({
         center: [x, y], 
         projection: <any> dkProjection, 
-        zoom: zoom 
+        zoom: zoom,
+        enableRotation: false
     });
 
     const mapView4 = new View({
         center: [x, y], 
         projection: <any> dkProjection, 
-        zoom: zoom 
+        zoom: zoom ,
+        enableRotation: false
     });
     
     
@@ -81,7 +85,7 @@
             view: mapView3,
             controls: []
         });
-        createLayerSwitcher(fotoLayers, 'map3Layerswitcher', false, 'map3', 'Foto')
+        createLayerSwitcher(fotoLayers, 'map3Layerswitcher', false, 'map3', 'GeoDK')
 
         map4 = new Map({
             layers: [ ...lidarLayers],
@@ -96,15 +100,15 @@
         refreshLayer(dashboardLayers[2], 60000, map1)
         refreshLayer(dashboardLayers[3], 60000, map1)
 
-        refreshLayer(obliqueLayers[2], 300000, map2)
+        refreshLayer(obliqueLayers[2], 60000, map2)
         refreshLayer(obliqueLayers[3], 300000, map2)
         refreshLayer(obliqueLayers[4], 300000, map2)
 
-        refreshLayer(fotoLayers[2], 300000, map3)
+        refreshLayer(fotoLayers[2], 60000, map3)
         refreshLayer(fotoLayers[3], 300000, map3)
         refreshLayer(fotoLayers[4], 300000, map3)
 
-        refreshLayer(lidarLayers[2], 300000, map4)
+        refreshLayer(lidarLayers[2], 60000, map4)
         refreshLayer(lidarLayers[3], 300000, map4)
         refreshLayer(lidarLayers[4], 300000, map4)
 
@@ -162,11 +166,11 @@
     </div>
     
     </div>
-<div class="mapCon">
+<div class="mapConDash">
     <div id="map1">
-        <div class="controlPanel left" id="map1Layerswitcher"></div>
+        <div class="mapOverlay leftOverlay" id="map1Layerswitcher"></div>
         {#if map1URL}
-            <div class="legend right" id="legend">
+            <div class="mapOverlay rightOverlay" id="legend">
                 <h2 class="legendTitle">Legend</h2>
                 <img id="legendImage" src= {$map1URL} alt="Legend">
             </div>
@@ -175,35 +179,35 @@
     </div>
     <div id="map2">
         {#if map2URL}
-            <div class="legend left" id="legend">
+            <div class="mapOverlay leftOverlay" id="legend">
                 <h2 class="legendTitle">Legend</h2>
                 <img id="legendImage" src= {$map2URL} alt="Legend">
             </div>
         {/if}
         
-        <div class="controlPanel right" id="map2Layerswitcher"></div>
+        <div class="mapOverlay rightOverlay" id="map2Layerswitcher"></div>
         
     </div>
     <div id="map3">
         {#if map3URL}
-            <div class="legend right" id="legend">
+            <div class="mapOverlay rightOverlay" id="legend">
                 <h2 class="legendTitle">Legend</h2>
                 <img id="legendImage" src= {$map3URL} alt="Legend">
             </div>
         {/if}
         
-        <div class="controlPanel left" id="map3Layerswitcher"></div>
+        <div class="mapOverlay leftOverlay" id="map3Layerswitcher"></div>
         
     </div>
     <div id="map4">
         {#if map4URL}
-            <div class="legend left" id="legend">
+            <div class="mapOverlay leftOverlay" id="legend">
                 <h2 class="legendTitle">Legend</h2>
                 <img id="legendImage" src= {$map4URL} alt="Legend">
             </div>
         {/if}
         
-        <div class="controlPanel right" id="map4Layerswitcher"></div>
+        <div class="mapOverlay rightOverlay" id="map4Layerswitcher"></div>
         
     </div>
 </div>
@@ -215,7 +219,7 @@
 
 
 <style>
-    .mapCon {
+    .mapConDash {
         display: flex;
         flex-wrap: wrap;
         height: calc(100vh - 100px);
@@ -226,7 +230,6 @@
         flex: 1 0 40%;
         border: #71a5de 6px solid;
         padding: 0px;
-        /* margin: 5px; */
     }
     #map1, #map3 {
         border-right: #71a5de 3px solid;
@@ -234,30 +237,13 @@
     #map2, #map4 {
         border-left:#71a5de 3px solid;
     }
-    .controlPanel, .legend {
-        z-index: 1000;
-        position: absolute;
-        border: solid #71a5de 3px;
-        border-radius: 20px;
-        width: 200px;
-        height: auto;
-        top: 20px;
-        left: 20px;
-        background-color: rgba(218, 218, 218, 0.836) ;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: start;
-        align-items: center;
+    #map1, #map2 {
+        border-bottom: #71a5de 3px solid;
     }
-    .controlPanel.right, .legend.right {
-        left: unset;
-        right: 20px;
+    #map3, #map4 {
+        border-top: #71a5de 3px solid;
     }
-    .controlPanel.left, .legend.left {
-        left: 20px;
-        right: unset;
-    }
+   
     .title {
         display: flex;
         flex-direction: row;

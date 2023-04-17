@@ -322,7 +322,7 @@ const buildMapLayersWithBaseLayers = (layerParams: any, layerArray: Layer<any>[]
     })
     layerArray.push(osmLayer)
     
-    
+    const now = new Date()
     for (const layer of layerParams) {
         const newLayer = new TileLayer({
             visible: layer.visible,
@@ -337,6 +337,7 @@ const buildMapLayersWithBaseLayers = (layerParams: any, layerArray: Layer<any>[]
                     transparent: 'TRUE',
                     layers: layer.layers,
                     format: layer.format,
+                    time: now.getTime()
                 },
             })
         })

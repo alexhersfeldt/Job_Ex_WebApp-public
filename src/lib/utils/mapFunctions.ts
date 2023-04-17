@@ -260,6 +260,7 @@ export async function refreshLayer(layer: Layer<any, LayerRenderer<any>>, interv
         
         const now = new Date()
         layer.getSource().updateParams({'TIME': now.getTime()})
+        map.updateSize()
         
         console.log('Refreshed Layer ' + layer.get('title'));
         setTimeout(refresh, interval);

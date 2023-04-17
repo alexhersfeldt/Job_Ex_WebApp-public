@@ -73,7 +73,7 @@
 <div class="mapCon">
     <div id="map">
     </div>
-    <div class="mapOverlay" id="leftOverlay">
+    <div class="mapOverlay leftOverlay" >
         <div id="baseLayerSwitcher">   
         </div>
         <hr class="solid">
@@ -81,7 +81,7 @@
         </div>
         
     </div>
-    <div class="mapOverlay" id="rightOverlay">
+    <div class="mapOverlay rightOverlay">
         {#if dftilesURL}
             <div class="legend" id="legend">
                 <h2>Legend</h2>
