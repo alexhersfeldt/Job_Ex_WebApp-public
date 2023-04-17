@@ -283,7 +283,7 @@ const sopStatusParams = [
         query_layers: 'SOPblokke',
         url: `${dataforsyningenUrl}/fotoflyvning_app?`,
         format: 'image/png',
-        visible: false
+        visible: true
     },
 ]
 

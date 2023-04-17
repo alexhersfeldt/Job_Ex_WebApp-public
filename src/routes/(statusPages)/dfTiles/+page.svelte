@@ -73,7 +73,7 @@
 <div class="mapCon">
     <div id="map">
     </div>
-    <div class="mapOverlay leftOverlay" >
+    <div class="mapOverlay leftOverlay" id="layerSwitcher" >
         <div id="baseLayerSwitcher">   
         </div>
         <hr class="solid">
@@ -109,16 +109,16 @@
         align-items: center;
     }
 
-    #rightOverlay {   
+    .rightOverlay {   
         right: 20px;   
     }
-    #leftOverlay {   
+    .leftOverlay {   
         left: 20px;   
     }
     hr{
         border: #71a5de 0px solid; 
         border-radius: 3px;
-        width: 100%;
+        width: 15%;
     } 
     .title {
         position: absolute;
@@ -146,6 +146,8 @@
         justify-content: start;
         align-items: center;
     }
-    
+    #layerSwitcher {
+        width: 15%;
+    }
     
 </style>

@@ -66,6 +66,7 @@
         margin: 0px;
         padding: 10px;
         height: 30px;
+        text-align: center;
     }
     
 </style>

@@ -39,9 +39,15 @@
         });
 
         
-        createLayerSwitcher(fotoStatusLayers, 'tileLayerSwitcher', false , 'map', 'Layers', fotoStatusUrl );
+        createLayerSwitcher(fotoStatusLayers, 'layerSwitcher', false , 'map', 'Layers', fotoStatusUrl );
+
+        setOpacity(2, fotoStatusLayers);
+        setOpacitySliders(2);
 
         fotoStatusUrl.set(getLegendUrl(fotoStatusLayers[2]));
+        let pointLayerSource = addPointLayer(map);
+        const infoLayer = [fotoStatusLayers[2]];
+        addMapClickEvent(map, infoLayer, pointLayerSource);
         
     })
 
@@ -49,97 +55,37 @@
 
 <div class="title">
     <img src="https://raw.githubusercontent.com/SDFIdk/.github/main/SDFI_DK_Hvid.svg" alt="SDFI logo" height="80">
-    <h1>Tile Info</h1>
+    <h1>GeoDK Status</h1>
 </div>
 <div class="mapCon">
     <div id="map">
     </div>
-    <div id="mapInfo">
-        <!-- <div id="baseLayerSwitcher"> 
+    <div class="mapOverlay leftOverlay" id="panel" >
+        <div id="layerSwitcher">
         </div>
-        <hr class="solid"> -->
-        <div id="tileLayerSwitcher">
-        </div>
-        
-    </div>
-    <div class="featureInfo">
         {#if fotoStatusUrl}
             <div class="legend" id="legend">
                 <h2 class="legendTitle">Legend</h2>
                 <img id="legendImage" src= {$fotoStatusUrl} alt="Legend">
             </div>
-        {/if}   
+        {/if} 
         
-        <hr class="solid">
+    </div>
+    <div class="mapOverlay rightOverlay" id="panel" >
+        
         <h2>Info</h2>
         <hr class="solid">
         <div class="wmsRes">
         </div>
+        
     </div>
 </div> 
 
 
 
 <style>
-    .legend{
-        
-        width: 200px;
-        height: 100%;
-        top: 20px;
-        right: 20px;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: start;
-        align-items: center;
-    }
-  #map {
-        position: absolute;
-        border-radius: 20px;
-        margin: 0px;
-        border: 0px;
-        width: 100%;
-        height: 100%;
-        left: 0px;
-    }
-    #mapInfo {
-        position: absolute;
-        border: solid #71a5de 3px;
-        border-radius: 20px;
-        width: 15%;
-        height: auto;
-        top: 20px;
-        left: 20px;
-        background-color: rgba(218, 218, 218, 0.836) ;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: start;
-        align-items: center;
-    }
-    .mapCon {
-        position: absolute;
-        height: calc(100vh - 50px);
-        box-sizing: border-box;
-        width: 100%;
-        top: 50px;
-        left: 0px;
-        border: #71a5de 5px solid;
-    }
-    .featureInfo {
-        position: absolute;
-        border: solid #71a5de 3px;
-        border-radius: 20px;
-        width:  auto;
-        height: auto;
-        top: 20px;
-        right: 20px;
-        background-color: rgba(218, 218, 218, 0.836) ;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: start;
-        align-items: center;
+     #panel{
+        width:15%;
     }
     hr{
         border: #71a5de 3px solid; 
