@@ -19,6 +19,7 @@ export let lidarStatusLayers: Layer<any>[] = []
 export let obliqueStatusLayers: Layer<any>[] = []
 export let sopStatusLayers: Layer<any>[] = []
 export let vektorStatusLayers: Layer<any>[] = []
+export let statusMapsBaseLayers: Layer<any>[] = []
 
 
 
@@ -255,14 +256,7 @@ const fotoStatusParams = [
         format: 'image/png',
         visible: true
     },  
-    {
-        title: 'Kommuner',
-        url: `${dataforsyningenUrl}/dagi_DAF`,
-        layers: 'Kommuneinddeling',
-        query_layers: 'Kommuneinddeling',
-        format: 'image/png',
-        visible: false
-    },
+
     {
         title: 'Flighttracks Spring',
         layers: 'FlighttracksSpring',
@@ -290,14 +284,6 @@ const lidarStatusParams = [
         visible: true
     },
     {
-        title: 'Kommuner',
-        url: `${dataforsyningenUrl}/dagi_DAF`,
-        layers: 'Kommuneinddeling',
-        query_layers: 'Kommuneinddeling',
-        format: 'image/png',
-        visible: false
-    },
-    {
         title: 'LiDAR lots',
         layers: 'LiDAR_Lot',
         query_layers: 'LiDAR_Lot',
@@ -322,6 +308,7 @@ const lidarStatusParams = [
         visible: false
     },
     
+    
 ]
 const obliqueStatusParams = [
     {
@@ -331,14 +318,6 @@ const obliqueStatusParams = [
         url: `${dataforsyningenUrl}/fotoflyvning_app?`,
         format: 'image/png',
         visible: true
-    },
-    {
-        title: 'Kommuner',
-        url: `${dataforsyningenUrl}/dagi_DAF`,
-        layers: 'Kommuneinddeling',
-        query_layers: 'Kommuneinddeling',
-        format: 'image/png',
-        visible: false
     },
     { 
         title: 'Oblique Flight Tracks Today',
@@ -366,14 +345,6 @@ const sopStatusParams = [
         url: `${dataforsyningenUrl}/fotoflyvning_app?`,
         format: 'image/png',
         visible: true
-    },
-    {
-        title: 'Kommuner',
-        url: `${dataforsyningenUrl}/dagi_DAF`,
-        layers: 'Kommuneinddeling',
-        query_layers: 'Kommuneinddeling',
-        format: 'image/png',
-        visible: false
     },
     {
         title: 'SOP tracks this year',
@@ -408,6 +379,23 @@ const vektorStatusParams = [
         query_layers: 'Fotoblokke',
         url: `${dataforsyningenUrl}/fotoflyvning_app?`,
         format: 'image/png',
+        visible: false
+    },
+]
+
+const statusMapsBaseLayersParams = [
+    {
+        title: 'Skærmkort',
+        url: `${dataforsyningenUrl}/topo_skaermkort_DAF?`,
+        layers: 'dtk_skaermkort',
+        format: 'image/png',
+        visible: true
+    },
+    {
+        title: 'Ortofoto forår',
+        url: `${dataforsyningenUrl}/orto_foraar_DAF?`,
+        layers: ['orto_foraar_12_5'],
+        format: 'image/jpeg',
         visible: false
     },
     {
@@ -517,11 +505,13 @@ buildMapLayersWithBaseLayers(obliqueLayerParams, obliqueLayers)
 buildMapLayersWithBaseLayers(sopLayerParams, sopLayers)
 buildMapLayersWithBaseLayers(lidarLayerParams, lidarLayers)
 
-buildMapLayersWithBaseLayers(fotoStatusParams, fotoStatusLayers)
-buildMapLayersWithBaseLayers(lidarStatusParams, lidarStatusLayers)
-buildMapLayersWithBaseLayers(obliqueStatusParams, obliqueStatusLayers)
-buildMapLayersWithBaseLayers(sopStatusParams, sopStatusLayers)
-buildMapLayersWithBaseLayers(vektorStatusParams, vektorStatusLayers)
+buildMapLayers(fotoStatusParams, fotoStatusLayers)
+buildMapLayers(lidarStatusParams, lidarStatusLayers)
+buildMapLayers(obliqueStatusParams, obliqueStatusLayers)
+buildMapLayers(sopStatusParams, sopStatusLayers)
+buildMapLayers(vektorStatusParams, vektorStatusLayers)
+
+buildMapLayers(statusMapsBaseLayersParams, statusMapsBaseLayers)
 
 
 

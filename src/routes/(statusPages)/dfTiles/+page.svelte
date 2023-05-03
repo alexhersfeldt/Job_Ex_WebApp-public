@@ -1,34 +1,15 @@
 <script lang="ts">
     import { Map, View } from "ol";
     import { onMount } from "svelte";
-    import { mapBaseLayers, mapTileLayers } from "../../../lib/utils/mapLayers";
-    import { createLayerSwitcher, getLegendUrl,  setOpacitySliders, setOpacity, addPointLayer, addMapClickEvent} from "../../../lib/utils/mapFunctions";
-    import { mapView } from "../../../lib/utils/mapView";
-	import { dftilesURL } from "$lib/utils/stores";
-	import { register } from "ol/proj/proj4";
-	import proj4 from "proj4";
-	import { get } from "ol/proj";
+    
+	import { dfTilesURL } from "$lib/utils/stores";
+	import { addLayerSwitcher, addTitleH2, getLegendUrlFromLayer, setOpacityToHalf } from "$lib/utils/mapOverlayFunctions";
+	import { addPointLayer, getWMSInfoAndAddPointArray } from "$lib/utils/mapFunctions";
+	import { mapBaseLayers, mapTileLayers } from "$lib/utils/mapLayers";
+	import { makeMapView } from "$lib/utils/mapView";
 
     let map: Map;
-    export const title = "DataFordeleren Tiles";
-
-    const x = 607933;
-    const y = 6230000;
     const zoom = 8;
-
-    const mapSrs = "EPSG:25832"
-    proj4.defs(mapSrs,"+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs");
-    register(proj4);
-    const dkProjection = get(mapSrs);
-
-    // Map views for each map
-
-    const mapView1 = new View({
-        center: [x, y], 
-        projection: <any> dkProjection, 
-        zoom: zoom 
-    });
-
    
 
     onMount(()=> { 
@@ -37,30 +18,25 @@
         map = new Map({
             layers: [...mapBaseLayers, ...mapTileLayers],
             target: 'map',
-            view: mapView1,
+            view: makeMapView(zoom),
             controls: []
         });
 
         // create layer switcher
-        createLayerSwitcher(mapBaseLayers, 'baseLayerSwitcher', true, 'map', 'Background');
-        createLayerSwitcher(mapTileLayers, 'layerSwitcher', true , 'map', 'Tiles', dftilesURL );
+        addTitleH2('Base Layers', 'baseLayerSwitcher');
+        addLayerSwitcher(mapBaseLayers, 'baseLayerSwitcher', true, 'map');
+        addLayerSwitcher(mapTileLayers, 'layerSwitcher', true , 'map', dfTilesURL );
 
         // set opacity using index in layer array
-        setOpacity(0, mapTileLayers);
-        setOpacity(1, mapTileLayers);
-        setOpacity(2, mapTileLayers);
-        setOpacity(3, mapTileLayers);
-
-        // set opacityslider start positions using index of all map layers
-        setOpacitySliders(2);
-        setOpacitySliders(3);
-        setOpacitySliders(4);
-        setOpacitySliders(5);
+        setOpacityToHalf(0, mapTileLayers);
+        setOpacityToHalf(1, mapTileLayers);
+        setOpacityToHalf(2, mapTileLayers);
+        setOpacityToHalf(3, mapTileLayers);
         
         let pointLayerSource = addPointLayer(map);
-        addMapClickEvent(map, mapTileLayers, pointLayerSource);
+        getWMSInfoAndAddPointArray(map, mapTileLayers, pointLayerSource);
 
-        dftilesURL.set(getLegendUrl(mapTileLayers[0]));
+        dfTilesURL.set(getLegendUrlFromLayer(mapTileLayers[0]));
         
     })
 
@@ -82,15 +58,15 @@
         
     </div>
     <div class="mapOverlay rightOverlay">
-        {#if dftilesURL}
+        {#if dfTilesURL}
             <div class="legend" id="legend">
                 <h2>Legend</h2>
-                <img id="legendImage" src= {$dftilesURL} alt="Legend">
+                <img id="legendImage" src= {$dfTilesURL} alt="Legend">
             </div>
         {/if}   
         
         <hr class="solid">
-        <div class="wmsRes">
+        <div id="wmsRes">
         </div>
     </div>
 </div> 
@@ -140,7 +116,7 @@
         font-size: 2rem;
         color: white;
     }
-    .wmsRes {
+    #wmsRes {
         display: flex;
         flex-direction: column;
         justify-content: start;

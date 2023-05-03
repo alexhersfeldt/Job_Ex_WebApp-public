@@ -1,58 +1,37 @@
 <script lang="ts">
     import { Map, View } from "ol";
     import { onMount } from "svelte";
-    import { lidarStatusLayers} from "../../../lib/utils/mapLayers";
-    import { createLayerSwitcher, getLegendUrl,  setOpacitySliders, setOpacity, addPointLayer, addMapClickEvent} from "../../../lib/utils/mapFunctions";
+    import { addLayerSwitcher, addTitleH2, getLegendUrlFromLayer, setOpacityToHalf } from "$lib/utils/mapOverlayFunctions";
+	import { addPointLayer, getWMSInfoAndAddPointArray } from "$lib/utils/mapFunctions";
+	
+    import { lidarStatusLayers, statusMapsBaseLayers} from "../../../lib/utils/mapLayers";
 	import { lidarStatusUrl } from "$lib/utils/stores";
-	import { register } from "ol/proj/proj4";
-	import proj4 from "proj4";
-	import { get } from "ol/proj";
+    import { makeMapView } from "$lib/utils/mapView";
 
     let map: Map;
     export const title = "DataFordeleren Tiles";
-
-    const x = 607933;
-    const y = 6230000;
     const zoom = 8;
-
-    const mapSrs = "EPSG:25832"
-    proj4.defs(mapSrs,"+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs");
-    register(proj4);
-    const dkProjection = get(mapSrs);
-
-    const mapView1 = new View({
-        center: [x, y], 
-        projection: <any> dkProjection, 
-        zoom: zoom 
-    });
-
    
 
     onMount(()=> { 
 
         // create map
         map = new Map({
-            layers: [...lidarStatusLayers],
+            layers: [ ...statusMapsBaseLayers,...lidarStatusLayers],
             target: 'map',
-            view: mapView1,
+            view: makeMapView(zoom),
             controls: []
         });
+        addTitleH2('Lidar Status', 'layerSwitcher')
+        addLayerSwitcher(statusMapsBaseLayers, 'layerSwitcher', true , 'map');
+        addLayerSwitcher(lidarStatusLayers, 'layerSwitcher', true , 'map');
 
         
-        createLayerSwitcher(lidarStatusLayers, 'layerSwitcher', false , 'map', 'Layers', lidarStatusUrl );
 
-        setOpacity(2, lidarStatusLayers);
-        setOpacity(3, lidarStatusLayers);
-        setOpacity(4, lidarStatusLayers);
-
-        setOpacitySliders(2);
-        setOpacitySliders(3);
-        setOpacitySliders(4);
-
-        lidarStatusUrl.set(getLegendUrl(lidarStatusLayers[2]));
+        lidarStatusUrl.set(getLegendUrlFromLayer(lidarStatusLayers[0]));
         let pointLayerSource = addPointLayer(map);
-        const infoLayer = [lidarStatusLayers[2]];
-        addMapClickEvent(map, infoLayer, pointLayerSource);
+        const infoLayer = [lidarStatusLayers[0]];
+        getWMSInfoAndAddPointArray(map, lidarStatusLayers, pointLayerSource);
         
     })
 
@@ -60,7 +39,7 @@
 
 <div class="title">
     <img src="https://raw.githubusercontent.com/SDFIdk/.github/main/SDFI_DK_Hvid.svg" alt="SDFI logo" height="80">
-    <h1>Lidar Status</h1>
+    <h1>GeoDK Status</h1>
 </div>
 <div class="mapCon">
     <div id="map">
@@ -80,7 +59,7 @@
         
         <h2>Info</h2>
         <hr class="solid">
-        <div class="wmsRes">
+        <div id="wmsRes">
         </div>
         
     </div>

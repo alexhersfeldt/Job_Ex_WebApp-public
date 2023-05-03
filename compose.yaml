@@ -1,0 +1,5 @@
+services:
+    job_webapp:
+        image: kortforsyningen/job_webapp:latest
+        ports:
+            - "65100:4173"
