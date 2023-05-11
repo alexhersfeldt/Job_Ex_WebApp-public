@@ -7,18 +7,18 @@ const kmsTicket = '0e6c47c3ae394ea5629267c83f6b2092';
 const dataforsyningenUrl = 'https://api.dataforsyningen.dk'
 const kortforsyningenUrl = 'https://kortforsyningen.kms.dk'
 
-export let mapBaseLayers: Layer<any>[] = []
-export let mapTileLayers: Layer<any>[] = []
-export let dashboardLayers: Layer<any>[] = []
-export let fotoLayers: Layer<any>[] = []
-export let obliqueLayers: Layer<any>[] = []
-export let sopLayers: Layer<any>[] = []
-export let lidarLayers: Layer<any>[] = []
-export let fotoStatusLayers: Layer<any>[] = []
-export let lidarStatusLayers: Layer<any>[] = []
-export let obliqueStatusLayers: Layer<any>[] = []
-export let sopStatusLayers: Layer<any>[] = []
-export let vektorStatusLayers: Layer<any>[] = []
+export const mapBaseLayers: Layer<any>[] = []
+export const mapTileLayers: Layer<any>[] = []
+export const dashboardLayers: Layer<any>[] = []
+export const fotoLayers: Layer<any>[] = []
+export const obliqueLayers: Layer<any>[] = []
+export const sopLayers: Layer<any>[] = []
+export const lidarLayers: Layer<any>[] = []
+export const fotoStatusLayers: Layer<any>[] = []
+export const lidarStatusLayers: Layer<any>[] = []
+export const obliqueStatusLayers: Layer<any>[] = []
+export const sopStatusLayers: Layer<any>[] = []
+export const vektorStatusLayers: Layer<any>[] = []
 
 
 
@@ -122,6 +122,14 @@ const dashboardLayerParams = [
         format: 'image/png',
         visible: false
     },
+    {
+        title: 'Hist-Orto Demo',
+        layers: 'hist_orto_demo',
+        query_layers: 'hist_orto_demo',
+        url: `${dataforsyningenUrl}/befaestelse?`,
+        format: 'image/png',
+        visible: false
+    },
     
     
     
@@ -153,6 +161,7 @@ const fotoLayerParams = [
         format: 'image/png',
         visible: false
     },
+    
     
 ]
 const obliqueLayerParams = [
@@ -279,6 +288,14 @@ const fotoStatusParams = [
         format: 'image/png',
         visible: false
     },
+    { 
+        title: 'Active Flights',
+        layers: ['Fotofly'],
+        query_layers: ['Fotofly'],
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: true
+    },
 ]
 const lidarStatusParams = [
     {
@@ -321,6 +338,14 @@ const lidarStatusParams = [
         format: 'image/png',
         visible: false
     },
+    { 
+        title: 'Active Flights',
+        layers: ['Fotofly'],
+        query_layers: ['Fotofly'],
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: true
+    },
     
 ]
 const obliqueStatusParams = [
@@ -356,6 +381,14 @@ const obliqueStatusParams = [
         format: 'image/png',
         visible: false
     },
+    { 
+        title: 'Active Flights',
+        layers: ['Fotofly'],
+        query_layers: ['Fotofly'],
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: true
+    },
     
 ]
 const sopStatusParams = [
@@ -390,6 +423,14 @@ const sopStatusParams = [
         url: `${dataforsyningenUrl}/fotoflyvning_app?`,
         format: 'image/png',
         visible: false
+    },
+    { 
+        title: 'Active Flights',
+        layers: ['Fotofly'],
+        query_layers: ['Fotofly'],
+        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
+        format: 'image/png',
+        visible: true
     },
 ]
 

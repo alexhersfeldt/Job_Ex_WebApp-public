@@ -88,12 +88,12 @@
         createLayerSwitcher(fotoLayers, 'map3Layerswitcher', false, 'map3', 'GeoDK')
 
         map4 = new Map({
-            layers: [ ...lidarLayers],
+            layers: [ ...sopLayers],
             target: 'map4',
             view: mapView4,
             controls: []
         });
-        createLayerSwitcher(lidarLayers, 'map4Layerswitcher', false, 'map4' , 'Lidar')
+        createLayerSwitcher(sopLayers, 'map4Layerswitcher', false, 'map4' , 'SOP')
 
 
         // Refreshes active fly layer every minute
