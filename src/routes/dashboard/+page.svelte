@@ -3,11 +3,13 @@
     
 	import { Map, Overlay } from "ol";
 	import { onMount } from "svelte";
+    import { mapBaseLayers, mapTileLayers, dashboardLayers, obliqueLayers, sopLayers, lidarLayers, fotoLayers } from "../../lib/utils/mapLayers";
+    import { createLayerSwitcher, refreshLayer, getInfo, getLegendUrl } from "../../lib/utils/mapFunctions";
+    import View from 'ol/View';
+    import proj4 from "proj4";
+    import { get } from "ol/proj";
+    import { register } from "ol/proj/proj4";
 	import { map1URL, map2URL, map3URL, map4URL } from "$lib/utils/stores";
-	import { makeMapView } from "$lib/utils/mapView";
-	import { dashboardLayers, fotoLayers, lidarLayers, obliqueLayers } from "$lib/utils/mapLayers";
-	import { addLayerSwitcher, addTitleH2, getLegendUrlFromLayer } from "$lib/utils/mapOverlayFunctions";
-	import { getWMSInfoAndAddPopup, refreshLayer } from "$lib/utils/mapFunctions";
 
     // Variables
     let map1: Map;
@@ -15,8 +17,48 @@
     let map3: Map;
     let map4: Map;
 
-   
+    const x = 607933;
+    const y = 6230000;
     const zoom = 8.5;
+
+    const mapSrs = "EPSG:25832"
+    proj4.defs(mapSrs,"+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs");
+    register(proj4);
+    const dkProjection = get(mapSrs);
+
+    // Map views for each map
+
+    const mapView1 = new View({
+        center: [x, y], 
+        projection: <any> dkProjection, 
+        zoom: zoom,
+        enableRotation: false
+    });
+
+    const mapView2 = new View({
+        center: [x, y], 
+        projection: <any> dkProjection, 
+        zoom: zoom,
+        enableRotation: false
+    });
+
+    const mapView3 = new View({
+        center: [x, y], 
+        projection: <any> dkProjection, 
+        zoom: zoom,
+        enableRotation: false
+    });
+
+    const mapView4 = new View({
+        center: [x, y], 
+        projection: <any> dkProjection, 
+        zoom: zoom ,
+        enableRotation: false
+    });
+    
+    
+    
+
 
     onMount(()=> { 
         
@@ -24,38 +66,34 @@
         map1 = new Map({
             layers: [...dashboardLayers],
             target: 'map1',
-            view: makeMapView(zoom),
+            view: mapView1,
             controls: []
         });
-        addTitleH2('Overblik', 'map1Layerswitcher')
-        addLayerSwitcher(dashboardLayers, 'map1Layerswitcher', false, 'map1')
+        createLayerSwitcher(dashboardLayers, 'map1Layerswitcher', false, 'map1', 'Overblik')
 
         map2 = new Map({
             layers: [...obliqueLayers],
             target: 'map2',
-            view: makeMapView(zoom),
+            view: mapView2,
             controls: []
         });
-        addTitleH2('Oblique', 'map2Layerswitcher')
-        addLayerSwitcher(obliqueLayers, 'map2Layerswitcher', false, 'map2')
+        createLayerSwitcher(obliqueLayers, 'map2Layerswitcher', false, 'map2', 'Oblique')
 
         map3 = new Map({
             layers: [...fotoLayers],
             target: 'map3',
-            view: makeMapView(zoom),
+            view: mapView3,
             controls: []
         });
-        addTitleH2('GeoDK', 'map3Layerswitcher')
-        addLayerSwitcher(fotoLayers, 'map3Layerswitcher', false, 'map3')
+        createLayerSwitcher(fotoLayers, 'map3Layerswitcher', false, 'map3', 'GeoDK')
 
         map4 = new Map({
             layers: [ ...lidarLayers],
             target: 'map4',
-            view: makeMapView(zoom),
+            view: mapView4,
             controls: []
         });
-        addTitleH2('Lidar', 'map4Layerswitcher')
-        addLayerSwitcher(lidarLayers, 'map4Layerswitcher', false, 'map4' )
+        createLayerSwitcher(lidarLayers, 'map4Layerswitcher', false, 'map4' , 'Lidar')
 
 
         // Refreshes active fly layer every minute
@@ -76,17 +114,17 @@
 
 
         // test popup
-        getWMSInfoAndAddPopup(map1, dashboardLayers, 'popup1', 'popup-content1', 'popup-closer1')
-        getWMSInfoAndAddPopup(map2, obliqueLayers, 'popup2', 'popup-content2', 'popup-closer2')
-        getWMSInfoAndAddPopup(map3, fotoLayers, 'popup3', 'popup-content3', 'popup-closer3')
-        getWMSInfoAndAddPopup(map4, lidarLayers, 'popup4', 'popup-content4', 'popup-closer4')
+        getInfo(map1, dashboardLayers, 'popup1', 'popup-content1', 'popup-closer1')
 
-        map1URL.set(getLegendUrlFromLayer(dashboardLayers[3]));
-        map2URL.set(getLegendUrlFromLayer(obliqueLayers[2]));
-        map3URL.set(getLegendUrlFromLayer(fotoLayers[2]));
-        map4URL.set(getLegendUrlFromLayer(lidarLayers[2]));
-        
-        
+
+        getInfo(map2, obliqueLayers, 'popup2', 'popup-content2', 'popup-closer2')
+        getInfo(map3, fotoLayers, 'popup3', 'popup-content3', 'popup-closer3')
+        getInfo(map4, lidarLayers, 'popup4', 'popup-content4', 'popup-closer4')
+
+        map1URL.set(getLegendUrl(dashboardLayers[3]));
+        map2URL.set(getLegendUrl(obliqueLayers[2]));
+        map3URL.set(getLegendUrl(fotoLayers[2]));
+        map4URL.set(getLegendUrl(lidarLayers[2]));
 
     })
 
@@ -125,9 +163,6 @@
     <div class="FrameWrapper">
         <iframe src="https://dmweb.sdfe.dk/maps/C1507145_PullFR24.html" title="description" frameborder=0 ></iframe>
         <iframe src="https://dmweb.sdfe.dk/maps/C1507145_PullFR24_Vik.html" title="description" frameborder=0 ></iframe>
-        <form action="/logout" method="POST">
-            <button class="btn logout" type="submit">Logout</button>
-        </form>
     </div>
     
     </div>
@@ -288,10 +323,6 @@
     }
     button:hover {
         box-shadow:0px 0px 0px 3px #166cc9 inset;
-    }
-
-    .logout {
-        border : 1px solid #3e6b9b;
     }
 
     

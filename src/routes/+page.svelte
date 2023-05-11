@@ -1,41 +1,33 @@
-<script lang='ts'>
-    import { page } from '$app/stores';
-
-</script>
-
 <div class="background">
 </div>
 <div class="textWrappper">
     <img src="https://raw.githubusercontent.com/SDFIdk/.github/main/SDFI_DK_Hvid.svg" alt="SDFI logo" width="300">
     <h1>Job Webapp</h1>
     <div id="links">
-        {#if $page.data.user}
         <div id="internalPages">
             <h3>Job Links</h3>
-            <button on:click={() => { window.location.href = '/job' }}>Job Workzone</button>
-            <form action="/logout" method="POST">
-                <button type="submit">Logout</button>
-            </form>
+            <button on:click={() => { window.location.href = '/dashboard' }}>Dashboard Map</button>
         </div>
-        {:else}
-        <div id="internalPages">
-            <h3>To create user ask Alex</h3>
-            <button class="btn" on:click={() => { window.location.href = '/login' }}>Login</button>
-            
-        </div>
-        {/if}
-
-        
         <div id="externalPages">
             <h3>External page Links</h3>
-            <button class="btn" on:click={() => { window.location.href = '/dfTiles' }}>Tiles Info Map</button>
-            <button class="btn" on:click={() => { window.location.href = '/fotoStatus' }}>Foto Status Map</button>
-            <button class="btn" on:click={() => { window.location.href = '/lidarStatus' }}>Lidar Status Map</button>
-            <button class="btn" on:click={() => { window.location.href = '/sopStatus' }}>SOP status Map</button>
-            <button class="btn" on:click={() => { window.location.href = '/obliqueStatus' }}>Oblique status Map</button>
-            <button class="btn" on:click={() => { window.location.href = '/vektorStatus' }}>vektor status Map</button>
+            <button on:click={() => { window.location.href = '/dfTiles' }}>Tiles Info Map</button>
+            <button on:click={() => { window.location.href = '/fotoStatus' }}>Foto Status Map</button>
+            <button on:click={() => { window.location.href = '/lidarStatus' }}>Lidar Status Map</button>
+            <button on:click={() => { window.location.href = '/sopStatus' }}>SOP status Map</button>
+            <button on:click={() => { window.location.href = '/obliqueStatus' }}>Oblique status Map</button>
+            <button on:click={() => { window.location.href = '/vektorStatus' }}>vektor status Map</button>
         </div>
     </div>
+    
+ 
+    
+
+    <!-- a button with a a link inside -->
+    
+    <br>
+    
+    
+
 </div>
 
 
@@ -65,7 +57,7 @@
         border-radius: 15px;
         width: 60%;
     }
-    button, .btn {
+    button {
         background-color: #71a5de;
         color: white;
         border: none;

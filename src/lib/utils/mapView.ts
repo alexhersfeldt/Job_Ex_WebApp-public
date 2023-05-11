@@ -14,12 +14,8 @@ const y = 6230000;
 
 
 // wms konfigurationer
-export function makeMapView(zoom?: number) {
-    let mapView = new View({
-        center: [x, y], 
-        projection: <any> dkProjection, 
-        zoom: zoom || 8.5, 
-        enableRotation: false
-    })
-    return mapView
-}
+export let mapView = new View({
+    center: [x, y], 
+    projection: <any> dkProjection, 
+    zoom: 8.5 
+})

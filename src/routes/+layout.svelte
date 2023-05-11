@@ -1,6 +1,7 @@
 <script lang="ts">
-
-
+    import type { LayoutData } from './$types';
+    
+    // export let data: LayoutData;
 </script>
 
 
@@ -66,28 +67,6 @@
         padding: 10px;
         height: 30px;
         text-align: center;
-    }
-    :global(.btn) {
-        background-color: #71a5de;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 10px;
-        margin: 10px;
-        font-size: large;
-        width: 80%;
-    }
-    :global(.btn:hover) {
-        box-shadow: 0px 0px 0px 2px #18487c8c inset;
-    }
-
-    :global(.textField) {
-      background-color: #7999b9be;
-      color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 10px;
-        margin: 10px;
     }
     
 </style>

@@ -1,37 +1,57 @@
 <script lang="ts">
     import { Map, View } from "ol";
     import { onMount } from "svelte";
-    import { addLayerSwitcher, addTitleH2, getLegendUrlFromLayer, setOpacityToHalf } from "$lib/utils/mapOverlayFunctions";
-	import { addPointLayer, getWMSInfoAndAddPointArray } from "$lib/utils/mapFunctions";
-	
-    import { vektorStatusLayers, statusMapsBaseLayers} from "../../../lib/utils/mapLayers";
+    import { vektorStatusLayers} from "../../../lib/utils/mapLayers";
+    import { createLayerSwitcher, getLegendUrl,  setOpacitySliders, setOpacity, addPointLayer, addMapClickEvent} from "../../../lib/utils/mapFunctions";
 	import { vektorStatusUrl } from "$lib/utils/stores";
-    import { makeMapView } from "$lib/utils/mapView";
+	import { register } from "ol/proj/proj4";
+	import proj4 from "proj4";
+	import { get } from "ol/proj";
 
     let map: Map;
     export const title = "DataFordeleren Tiles";
+
+    const x = 607933;
+    const y = 6230000;
     const zoom = 8;
+
+    const mapSrs = "EPSG:25832"
+    proj4.defs(mapSrs,"+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs");
+    register(proj4);
+    const dkProjection = get(mapSrs);
+
+    const mapView1 = new View({
+        center: [x, y], 
+        projection: <any> dkProjection, 
+        zoom: zoom 
+    });
+
    
 
     onMount(()=> { 
 
         // create map
         map = new Map({
-            layers: [ ...statusMapsBaseLayers,...vektorStatusLayers],
+            layers: [...vektorStatusLayers],
             target: 'map',
-            view: makeMapView(zoom),
+            view: mapView1,
             controls: []
         });
-        addTitleH2('GeoDK Status', 'layerSwitcher')
-        addLayerSwitcher(statusMapsBaseLayers, 'layerSwitcher', true , 'map');
-        addLayerSwitcher(vektorStatusLayers, 'layerSwitcher', true , 'map');
 
         
+        createLayerSwitcher(vektorStatusLayers, 'layerSwitcher', false , 'map', 'Layers', vektorStatusUrl );
 
-        vektorStatusUrl.set(getLegendUrlFromLayer(vektorStatusLayers[0]));
+        setOpacity(2, vektorStatusLayers);
+        setOpacity(3, vektorStatusLayers);
+        setOpacity(4, vektorStatusLayers);
+        setOpacitySliders(2);
+        setOpacitySliders(3);
+        setOpacitySliders(4);
+
+        vektorStatusUrl.set(getLegendUrl(vektorStatusLayers[2]));
         let pointLayerSource = addPointLayer(map);
-        const infoLayer = [vektorStatusLayers[0]];
-        getWMSInfoAndAddPointArray(map, vektorStatusLayers, pointLayerSource);
+        const infoLayer = [vektorStatusLayers[2], vektorStatusLayers[3]];
+        addMapClickEvent(map, infoLayer, pointLayerSource);
         
     })
 
@@ -39,7 +59,7 @@
 
 <div class="title">
     <img src="https://raw.githubusercontent.com/SDFIdk/.github/main/SDFI_DK_Hvid.svg" alt="SDFI logo" height="80">
-    <h1>GeoDK Status</h1>
+    <h1>vektor Status</h1>
 </div>
 <div class="mapCon">
     <div id="map">
@@ -59,7 +79,7 @@
         
         <h2>Info</h2>
         <hr class="solid">
-        <div id="wmsRes">
+        <div class="wmsRes">
         </div>
         
     </div>
