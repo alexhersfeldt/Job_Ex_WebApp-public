@@ -13,7 +13,7 @@
 
     const x = 720967;
     const y = 6212374;
-    const zoom = 10;
+    const zoom = 13;
 
     const mapSrs = "EPSG:25832"
     proj4.defs(mapSrs,"+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs");
