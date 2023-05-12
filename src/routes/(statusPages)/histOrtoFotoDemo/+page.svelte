@@ -11,9 +11,9 @@
     let map: Map;
     export const title = "DataFordeleren Tiles";
 
-    const x = 607933;
-    const y = 6230000;
-    const zoom = 8;
+    const x = 720967;
+    const y = 6212374;
+    const zoom = 10;
 
     const mapSrs = "EPSG:25832"
     proj4.defs(mapSrs,"+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs");
@@ -37,15 +37,14 @@
             view: mapView1,
             controls: []
         });
+        // build wms layer and add to map
+
+
+
 
         
         createLayerSwitcher(histOrtoLayers, 'layerSwitcher', false , 'map', 'Layers' );
-
-        setOpacity(2, histOrtoLayers);
-        setOpacity(3, histOrtoLayers);
-
-        setOpacitySliders(2);
-        setOpacitySliders(3);
+    
         
     })
 

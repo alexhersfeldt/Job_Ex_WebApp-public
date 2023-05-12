@@ -263,20 +263,13 @@ const histOrtoLayerParams = [
     
     {
         title: 'Orto Forår',
-        visible: false,
+        visible: true,
         url: `${dataforsyningenUrl}/befaestelse?/orto_foraar_DAF?`,
         LAYERS: 'orto_foraar',
         query_layers: 'orto_foraar',
         FORMAT: 'image/png',
+        crossOrigin: 'anonymous',
         
-    },
-    {
-        title: 'Hist-Orto Demo',
-        layers: 'hist_orto_demo',
-        query_layers: 'hist_orto_demo',
-        url: `${dataforsyningenUrl}/befaestelse?`,
-        format: 'image/png',
-        visible: false
     }, 
 ]
 
