@@ -19,7 +19,7 @@ export const lidarStatusLayers: Layer<any>[] = []
 export const obliqueStatusLayers: Layer<any>[] = []
 export const sopStatusLayers: Layer<any>[] = []
 export const vektorStatusLayers: Layer<any>[] = []
-
+export const histOrtoLayers: Layer<any>[] = []
 
 
 // add OSM layer
@@ -107,14 +107,6 @@ const dashboardLayerParams = [
         visible: true
     },
     {
-        title: 'Active NoFly Zones',
-        layers: 'NoFly_Today',
-        query_layers: 'NoFly_Today',
-        url: `${dataforsyningenUrl}/fotoflyvning_app?`,
-        format: 'image/png',
-        visible: false
-    },
-    {
         title: 'Paspunkter',
         layers: 'gcp',
         query_layers: 'gcp',
@@ -129,6 +121,20 @@ const dashboardLayerParams = [
         url: `${dataforsyningenUrl}/befaestelse?`,
         format: 'image/png',
         visible: false
+    },
+    {
+        title: 'QO 16cm',
+        layers: 'quickorto',
+        url: `${dataforsyningenUrl}/orto_foraar_temp`,
+        FORMAT: 'image/jpeg',
+        visible: false,
+    }, 
+    {
+        title: 'QO 10cm',
+        layers: 'quickorto_10cm',
+        url: `${dataforsyningenUrl}/orto_foraar_temp`,
+        FORMAT: 'image/jpeg',
+        visible: false,
     },
     
     
@@ -252,6 +258,26 @@ const lidarLayerParams = [
     },
     
     
+]
+const histOrtoLayerParams = [
+    
+    {
+        title: 'Orto Forår',
+        visible: false,
+        url: `${dataforsyningenUrl}/befaestelse?/orto_foraar_DAF?`,
+        LAYERS: 'orto_foraar',
+        query_layers: 'orto_foraar',
+        FORMAT: 'image/png',
+        
+    },
+    {
+        title: 'Hist-Orto Demo',
+        layers: 'hist_orto_demo',
+        query_layers: 'hist_orto_demo',
+        url: `${dataforsyningenUrl}/befaestelse?`,
+        format: 'image/png',
+        visible: false
+    }, 
 ]
 
 const fotoStatusParams = [
@@ -557,12 +583,12 @@ buildMapLayersWithBaseLayers(fotoLayerParams, fotoLayers)
 buildMapLayersWithBaseLayers(obliqueLayerParams, obliqueLayers)
 buildMapLayersWithBaseLayers(sopLayerParams, sopLayers)
 buildMapLayersWithBaseLayers(lidarLayerParams, lidarLayers)
-
 buildMapLayersWithBaseLayers(fotoStatusParams, fotoStatusLayers)
 buildMapLayersWithBaseLayers(lidarStatusParams, lidarStatusLayers)
 buildMapLayersWithBaseLayers(obliqueStatusParams, obliqueStatusLayers)
 buildMapLayersWithBaseLayers(sopStatusParams, sopStatusLayers)
 buildMapLayersWithBaseLayers(vektorStatusParams, vektorStatusLayers)
+buildMapLayersWithBaseLayers(histOrtoLayerParams, histOrtoLayers)
 
 
 
