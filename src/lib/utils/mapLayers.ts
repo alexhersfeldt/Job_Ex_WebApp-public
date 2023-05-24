@@ -502,16 +502,34 @@ const buildMapLayersWithBaseLayers = (layerParams: any, layerArray: Layer<any>[]
     })
      layerArray.push(backgroundMap)
 
-
-     const osmLayer: Layer<any> = new TileLayer({
-        visible: false,
+     
+    const ortoMap = new TileLayer({
+        visible: true,
         properties:{
-            title: 'OSM',
-            group: 'base',
+            title: 'Ortofoto',
         },
-        source: new OSM()
+        source: new TileWMS({
+            url: `${dataforsyningenUrl}/orto_foraar_DAF?`,
+            params: {
+                ticket: kmsTicket,
+                transparent: 'false',
+                layers: 'orto_foraar_12_5',
+                format: 'image/jpeg',
+            },
+        })
     })
-    layerArray.push(osmLayer)
+     layerArray.push(ortoMap)
+
+
+    //  const osmLayer: Layer<any> = new TileLayer({
+    //     visible: false,
+    //     properties:{
+    //         title: 'OSM',
+    //         group: 'base',
+    //     },
+    //     source: new OSM()
+    // })
+    // layerArray.push(osmLayer)
     
     const now = new Date()
     for (const layer of layerParams) {
