@@ -504,7 +504,7 @@ const buildMapLayersWithBaseLayers = (layerParams: any, layerArray: Layer<any>[]
 
      
     const ortoMap = new TileLayer({
-        visible: true,
+        visible: false,
         properties:{
             title: 'Ortofoto',
         },
@@ -512,7 +512,7 @@ const buildMapLayersWithBaseLayers = (layerParams: any, layerArray: Layer<any>[]
             url: `${dataforsyningenUrl}/orto_foraar_DAF?`,
             params: {
                 ticket: kmsTicket,
-                transparent: 'false',
+                transparent: 'TRUE',
                 layers: 'orto_foraar_12_5',
                 format: 'image/jpeg',
             },
